@@ -52,6 +52,6 @@ function NI.prototype.JS(url) {
 
 /* Public
   Method */
-CoffeeShop.prototype.example = function() {
+NI.prototype.Example = function() {
 
 }
