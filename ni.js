@@ -1,6 +1,6 @@
 /* NI.JS, version 0.1 */
 
-if (NI === undefined) var NI = function() { };
+if (NI === undefined) var NI = { };
 
 /* NI.JS constructor */
 function NI.prototype.JS(url) {
