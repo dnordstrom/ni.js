@@ -36,7 +36,7 @@ function NI.prototype.JS(url) {
     script.type = "text/javascript";
     
     if (callback != undefined) {
-      script.src += "?callback=CoffeeShop._callback"
+      script.src += "?callback=NI.JS._callback"
 
       instance._callback = function(data) {
         callback(data);
