@@ -4,24 +4,40 @@
 
 if (NI === undefined) var NI = { };
 
-/* Private || Privileged
+/* Public
   Core helper methods */
-NI.prototype.JS = {
+NI.prototype.JS = (function() {
   /* Using ECMAScript 5 strict mode */
   "use strict";
 
   /* Private
     Instance to use instead of "this" in inner methods */
-  self: this,
+  var self = this;
+  
+  /* Private
+    Detects common browser features and capabilities */
+  var Detects = (function() {
+    var this.getElementById = !!document.getElementById;
+    var this.byId = this.getElementById;
 
-  find: function(element) {
-    if (!document.getElementById) return false;
-    document.getElementById(element);
-  },
+    var this.getElementsByTagName = !!document.getElementsByTagName;
+    var this.byTagName = this.getElementsByTagName;
+  })();
 
   /* Privileged
+    Detects and calls W3C DOM getElementById if available */
+  this.find = function(element) {
+    if (!self.Detects.byId) return false;
+    document.getElementById(element);
+  }
+})();
+
+/* Public
+  AJAX helper methods */
+NI.prototype.Ajax = (function() {
+  /* Private
     Retrieve the browser-specific XMLHttpRequest object */
-  getXHR: function() {
+  var getXHR = function() {
     if (typeof XMLHttpRequest == "undefined") {
       XMLHttpRequest = function() {
         try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") }
@@ -35,11 +51,11 @@ NI.prototype.JS = {
     }
     
     return new XMLHttpRequest();
-  },
-  
+  }
+
   /* Privileged
     Get JSON-P data from URL via AJAX */
-  getJSON: function(path, callback) {
+  this.getJSON = function(path, callback) {
     var request = self.getXHR();
     var script = document.createElement("script");
     
@@ -58,12 +74,5 @@ NI.prototype.JS = {
     if (document.getElementsByTagName("head").length > 0) {
       document.getElementsByTagName("head")[0].appendChild(script);
     }
-  },
-
-}
-
-/* Public
-  Method */
-NI.prototype.Example = function() {
-
-}
+  }
+})();
