@@ -1,16 +1,26 @@
-/* NI.JS, version 0.1 */
+/* NI.JS minimalist library
+ *  Built on best practices and prototypal JavaScript conventions.
+  Version 0.1 */
 
 if (NI === undefined) var NI = { };
 
-/* NI.JS constructor */
-function NI.prototype.JS(url) {
+/* Private || Privileged
+  Core helper methods */
+NI.prototype.JS = {
+  /* Using ECMAScript 5 strict mode */
+  "use strict";
+
   /* Private
     Instance to use instead of "this" in inner methods */
-  var instance = this;
+  self: this,
+
+  find: function(element) {
+    document.getElementById(element);
+  },
 
   /* Privileged
     Retrieve the browser-specific XMLHttpRequest object */
-  this.getXHR = function() {
+  getXHR: function() {
     if (typeof XMLHttpRequest == "undefined") {
       XMLHttpRequest = function() {
         try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") }
@@ -24,30 +34,31 @@ function NI.prototype.JS(url) {
     }
     
     return new XMLHttpRequest();
-  };
+  },
   
   /* Privileged
     Get JSON-P data from URL via AJAX */
-  this.getJSON = function(path, callback) {
-    var request = instance.getXHR();
+  getJSON: function(path, callback) {
+    var request = self.getXHR();
     var script = document.createElement("script");
     
-    script.src = instance.url + path;
+    script.src = self.url + path;
     script.type = "text/javascript";
     
     if (callback != undefined) {
-      script.src += "?callback=NI.JS._callback"
+      script.src += "?callback=NI.JS.callback";
 
-      instance._callback = function(data) {
+      self.callback = function(data) {
         callback(data);
-        instance._callback = undefined
+        delete self.callback;
       };
     }
     
     if (document.getElementsByTagName("head").length > 0) {
       document.getElementsByTagName("head")[0].appendChild(script);
     }
-  }
+  },
+
 }
 
 /* Public
