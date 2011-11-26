@@ -1,5 +1,5 @@
 /* NI.JS minimalist library
- *  Built on best practices and prototypal JavaScript conventions.
+   Best practices and prototypal JavaScript conventions
   Version 0.1 */
 
 if (NI === undefined) var NI = { };
