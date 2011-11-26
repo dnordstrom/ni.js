@@ -15,6 +15,7 @@ NI.prototype.JS = {
   self: this,
 
   find: function(element) {
+    if (!document.getElementById) return false;
     document.getElementById(element);
   },
 
