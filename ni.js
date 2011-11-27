@@ -34,11 +34,20 @@ NI.prototype.JS = (function() {
 
 /* Public
   AJAX helper methods */
-NI.prototype.Ajax = (function() {
+NI.prototype.HTTP = (function() {
+  /* Using ECMAScript 5 strict mode */
+  "use strict"
+
+  /* Private
+    Stores the appropriate XMLHttpRequest object */
+  var xml_http_request;
+
   /* Private
     Retrieve the browser-specific XMLHttpRequest object */
   var getXHR = function() {
-    if (typeof XMLHttpRequest == "undefined") {
+    if(!!xml_http_request) return xml_http_request;
+
+    if (typeof XMLHttpRequest === "undefined") {
       XMLHttpRequest = function() {
         try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") }
         catch (e) {}
@@ -50,7 +59,8 @@ NI.prototype.Ajax = (function() {
       }
     }
     
-    return new XMLHttpRequest();
+    xml_http_request = new XMLHttpRequest();
+    return xml_http_request;
   }
 
   /* Privileged
