@@ -36,7 +36,7 @@ NI.prototype.JS = (function() {
   Asynchronous request helper methods */
 NI.prototype.HTTP = (function() {
   /* Using ECMAScript 5 strict mode */
-  "use strict"
+  "use strict";
 
   /* Private
     Stores the appropriate XMLHttpRequest object */
