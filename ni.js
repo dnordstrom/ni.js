@@ -33,7 +33,7 @@ NI.prototype.JS = (function() {
 })();
 
 /* Public
-  AJAX helper methods */
+  Asynchronous request helper methods */
 NI.prototype.HTTP = (function() {
   /* Using ECMAScript 5 strict mode */
   "use strict"
