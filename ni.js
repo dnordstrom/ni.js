@@ -107,8 +107,8 @@ NI.prototype.HTTP = (function() {
    * @param {callback} Function Callback function to run after loading data.
    */
   self.getJSON = function(url, callback) {
-    var request = getXHR();
-    var script = document.createElement("script");
+    var request = getXHR(),
+        script = document.createElement("script");
     
     script.src = url;
     script.type = "text/javascript";
