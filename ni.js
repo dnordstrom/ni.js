@@ -98,6 +98,7 @@ NI.prototype.HTTP = (function() {
    * Load JSON-P data from URL via AJAX.
    *
    * @param {path} String URL to access.
+   * @param {callback} Function Callback function to run after loading data.
    */
   self.getJSON = function(url, callback) {
     var request = getXHR();
