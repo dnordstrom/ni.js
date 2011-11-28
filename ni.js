@@ -1,49 +1,80 @@
-/* NI.JS minimalist library
-   Best practices and prototypal JavaScript conventions
-  Version 0.1 */
+/**
+ * NI.JS minimalist library
+ * Best practices and prototypal JavaScript conventions.
+ * Version 0.1
+ */
 
-if (NI === undefined) var NI = { };
+if (typeof NI == "undefined") function NI() { };
 
-/* Public
-  Core helper methods */
+/**
+ * @public
+ * Core helper methods.
+ */
 NI.prototype.JS = (function() {
-  /* Using ECMAScript 5 strict mode */
+  /* Using ECMAScript 5 strict mode. */
   "use strict";
 
-  /* Private
-    Instance to use instead of "this" in inner methods */
-  var self = this;
-  
-  /* Private
-    Detects common browser features and capabilities */
-  var Detects = (function() {
-    var this.getElementById = !!document.getElementById;
-    var this.byId = this.getElementById;
+  /** 
+   * @private
+   * Object to define, return and assign.
+   */
+  var self = { };
 
-    var this.getElementsByTagName = !!document.getElementsByTagName;
-    var this.byTagName = this.getElementsByTagName;
-  })();
-
-  /* Privileged
-    Detects and calls W3C DOM getElementById if available */
-  this.find = function(element) {
+  /**
+   * @privileged
+   * Calls W3C DOM getElementById if available.
+   * @param {element} String ID of element to return.
+   */
+  self.find = function(element) {
     if (!self.Detects.byId) return false;
     document.getElementById(element);
   }
-})();
 
-/* Public
-  Asynchronous request helper methods */
+  return self; /* Return object instance */
+}());
+
+
+/**
+ * @public
+ * Capability detection helper.
+ */
+NI.prototype.Detects = (function() {
+  /* Using ECMAScript 5 strict mode. */
+  "use strict";
+
+  /**
+   * @private
+   * Object to define, return and assign
+   */
+  var self = { };
+
+  self.getElementById = self.byId =
+    !!document.getElementById;
+
+  self.getElementsByTagName = self.byTagName =
+    !!document.getElementsByTagName;
+
+  return self;
+}());
+
+/**
+ * @public
+ * Asynchronous request helper methods.
+ */
 NI.prototype.HTTP = (function() {
   /* Using ECMAScript 5 strict mode */
   "use strict";
 
-  /* Private
-    Stores the appropriate XMLHttpRequest object */
+  /**
+   * @private
+   * Stores the appropriate XMLHttpRequest object.
+   */
   var xml_http_request;
 
-  /* Private
-    Retrieve the browser-specific XMLHttpRequest object */
+  /**
+   * @private
+   * Retrieve the browser-specific XMLHttpRequest object.
+   */
   var getXHR = function() {
     if(!!xml_http_request) return xml_http_request;
 
@@ -63,21 +94,25 @@ NI.prototype.HTTP = (function() {
     return xml_http_request;
   }
 
-  /* Privileged
-    Get JSON-P data from URL via AJAX */
-  this.getJSON = function(path, callback) {
-    var request = self.getXHR();
+  /**
+   * @privileged
+   * Load JSON-P data from URL via AJAX.
+   *
+   * @param {path} String URL to access.
+   */
+  self.getJSON = function(url, callback) {
+    var request = getXHR();
     var script = document.createElement("script");
     
-    script.src = self.url + path;
+    script.src = url;
     script.type = "text/javascript";
     
-    if (callback != undefined) {
-      script.src += "?callback=NI.JS.callback";
+    if (typeof callback !== "undefined") {
+      script.src += "?callback=NI.HTTP.callback";
 
       self.callback = function(data) {
         callback(data);
-        delete self.callback;
+        delete NI.JS.callback;
       };
     }
     
@@ -85,4 +120,4 @@ NI.prototype.HTTP = (function() {
       document.getElementsByTagName("head")[0].appendChild(script);
     }
   }
-})();
+}());
