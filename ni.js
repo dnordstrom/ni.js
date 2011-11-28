@@ -4,7 +4,7 @@
  * Version 0.1
  */
 
-if (typeof NI == "undefined") function NI() { };
+if (typeof NI === "undefined") function NI() { };
 
 /**
  * @public
@@ -40,7 +40,7 @@ NI.prototype.JS = (function() {
     self.getElementsByTagName = self.byTagName =
       !!document.getElementsByTagName;
 
-    return self;
+    return self; /* Return object instance */
   }());
 
   /**
@@ -50,10 +50,10 @@ NI.prototype.JS = (function() {
    */
   self.find = function(element) {
     if (!self.Detects.byId) return false;
-    document.getElementById(element);
+    return document.getElementById(element);
   }
 
-  return self; /* Return object instance */
+  return self; /* Return object instance. */
 }());
 
 /**
@@ -63,6 +63,12 @@ NI.prototype.JS = (function() {
 NI.prototype.HTTP = (function() {
   /* Using ECMAScript 5 strict mode */
   "use strict";
+  
+  /**
+   * @private
+   * Object to define, return and assign.
+   */
+  var self = { };
 
   /**
    * @private
@@ -120,4 +126,6 @@ NI.prototype.HTTP = (function() {
       document.getElementsByTagName("head")[0].appendChild(script);
     }
   }
+
+  return self; /* Return object instance. */
 }());
