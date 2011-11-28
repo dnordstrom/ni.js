@@ -51,7 +51,7 @@ NI.prototype.JS = (function() {
   self.find = function(element) {
     if (!self.Detects.byId) return false;
     return document.getElementById(element);
-  }
+  };
 
   return self; /* Return object instance. */
 }());
