@@ -19,6 +19,29 @@ NI.prototype.JS = (function() {
    * Object to define, return and assign.
    */
   var self = { };
+  
+  /**
+   * @privileged
+   * Capability detection helper.
+   */
+  NI.prototype.Detects = (function() {
+    /* Using ECMAScript 5 strict mode. */
+    "use strict";
+
+    /**
+     * @private
+     * Object to define, return and assign
+     */
+    var self = { };
+
+    self.getElementById = self.byId =
+      !!document.getElementById;
+
+    self.getElementsByTagName = self.byTagName =
+      !!document.getElementsByTagName;
+
+    return self;
+  }());
 
   /**
    * @privileged
@@ -31,30 +54,6 @@ NI.prototype.JS = (function() {
   }
 
   return self; /* Return object instance */
-}());
-
-
-/**
- * @public
- * Capability detection helper.
- */
-NI.prototype.Detects = (function() {
-  /* Using ECMAScript 5 strict mode. */
-  "use strict";
-
-  /**
-   * @private
-   * Object to define, return and assign
-   */
-  var self = { };
-
-  self.getElementById = self.byId =
-    !!document.getElementById;
-
-  self.getElementsByTagName = self.byTagName =
-    !!document.getElementsByTagName;
-
-  return self;
 }());
 
 /**
