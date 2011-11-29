@@ -4,13 +4,21 @@
  * Version 0.1
  */
 
-if (typeof NI === "undefined") function NI() { };
+var NI,
+  document;
+
+(function () {
+  "use strict";
+  if (typeof NI === "undefined") {
+    NI = function () { };
+  }
+}());
 
 /**
  * @public
  * Core helper methods.
  */
-NI.prototype.JS = (function() {
+NI.prototype.JS = (function () {
   /* Using ECMAScript 5 strict mode. */
   "use strict";
 
@@ -19,15 +27,12 @@ NI.prototype.JS = (function() {
    * Object to define, return and assign.
    */
   var self = { };
-  
+
   /**
    * @privileged
    * Capability detection helper.
    */
-  NI.prototype.Detects = (function() {
-    /* Using ECMAScript 5 strict mode. */
-    "use strict";
-
+  NI.prototype.Detects = (function () {
     /**
      * @private
      * Object to define, return and assign
@@ -35,10 +40,10 @@ NI.prototype.JS = (function() {
     var self = { };
 
     self.getElementById = self.byId =
-      !!document.getElementById;
+      (typeof document.getElementById !== "undefined");
 
     self.getElementsByTagName = self.byTagName =
-      !!document.getElementsByTagName;
+      (typeof document.getElementsByTagName !== "undefined");
 
     return self; /* Return object instance */
   }());
@@ -48,8 +53,8 @@ NI.prototype.JS = (function() {
    * Calls W3C DOM getElementById if available.
    * @param {element} String ID of element to return.
    */
-  self.find = function(element) {
-    if (!self.Detects.byId) return false;
+  self.find = function (element) {
+    if (!self.Detects.byId) { return false; }
     return document.getElementById(element);
   };
 
@@ -60,44 +65,48 @@ NI.prototype.JS = (function() {
  * @public
  * Asynchronous request helper methods.
  */
-NI.prototype.HTTP = (function() {
+NI.prototype.HTTP = (function () {
   /* Using ECMAScript 5 strict mode */
   "use strict";
-  
+
+  /* Declaring private variables */
+  var self,
+    getXHR,
+    XMLHttpRequest;
+
   /**
    * @private
    * Object to define, return and assign.
    */
-  var self = { };
-
-  /**
-   * @private
-   * Stores the appropriate XMLHttpRequest object.
-   */
-  var xml_http_request;
+  self = { };
 
   /**
    * @private
    * Retrieve the browser-specific XMLHttpRequest object.
    */
-  var getXHR = function() {
-    if(!!xml_http_request) return xml_http_request;
+  getXHR = function () {
+    if (typeof XMLHttpRequest !== "undefined") {
+      return XMLHttpRequest;
+    } else {
+      XMLHttpRequest = function () {
+        var ActiveXObject;
 
-    if (typeof XMLHttpRequest === "undefined") {
-      XMLHttpRequest = function() {
-        try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") }
-        catch (e) {}
-        try { return new ActiveXObject("Msxml2.XMLHTTP.3.0") }
-        catch (e) {}
-        try { return new ActiveXObject("Msxml2.XMLHTTP") }
-        catch (e) {}
+        try {
+          return new ActiveXObject("Msxml2.XMLHTTP.6.0");
+        } catch (e1) { }
+        try {
+          return new ActiveXObject("Msxml2.XMLHTTP.3.0");
+        } catch (e2) { }
+        try {
+          return new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e3) { }
+
         return false;
-      }
+      };
     }
-    
-    xml_http_request = new XMLHttpRequest();
-    return xml_http_request;
-  }
+
+    return XMLHttpRequest;
+  };
 
   /**
    * @privileged
@@ -106,26 +115,25 @@ NI.prototype.HTTP = (function() {
    * @param {path} String URL to access.
    * @param {callback} Function Callback function to run after loading data.
    */
-  self.getJSON = function(url, callback) {
-    var request = getXHR(),
-        script = document.createElement("script");
-    
+  self.getJSON = function (url, callback) {
+    var script = document.createElement("script");
+
     script.src = url;
     script.type = "text/javascript";
-    
+
     if (typeof callback !== "undefined") {
       script.src += "?callback=NI.HTTP.callback";
 
-      self.callback = function(data) {
+      self.callback = function (data) {
         callback(data);
         delete NI.JS.callback;
       };
     }
-    
+
     if (document.getElementsByTagName("head").length > 0) {
       document.getElementsByTagName("head")[0].appendChild(script);
     }
-  }
+  };
 
   return self; /* Return object instance. */
 }());
